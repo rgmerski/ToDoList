@@ -1,0 +1,31 @@
+﻿<Window x:Class="ToDoApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ToDoApp"
+        mc:Ignorable="d"
+        Title="To Do" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+
+        <DockPanel x:Name="UsagePanel" Margin="10,10,10,10" LastChildFill="False">
+            <TextBox DockPanel.Dock="Left" x:Name="taskTextBox" Width="200" Margin="0,0,10,0"/>
+            <Button DockPanel.Dock="Left" Content="Add Task" Click="AddTask_Click" Margin="0,0,10,0"/>
+            <Button DockPanel.Dock="Right" Content="Complete Task" Click="CompleteTask_Click" Margin="0,0,10,0" IsEnabled="False" Width="100"/>
+            <Button x:Name="Remove" DockPanel.Dock="Right" Content="Remove Task" Click="RemoveTask_Click" Margin="0,0,10,0" IsEnabled="False" Width="100"/>
+        </DockPanel>
+
+        <ListBox x:Name="taskListBox" Grid.Row="1" Margin="10">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>
