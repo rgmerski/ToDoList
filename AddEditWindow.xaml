@@ -1,0 +1,45 @@
+﻿<Window x:Class="ToDoApp.AddEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ToDoApp"
+        mc:Ignorable="d"
+        Title="Edit Task" Height="300" Width="300">
+    <Grid>
+
+        <DockPanel x:Name="dataPanel" Margin="10,10,10,10" LastChildFill="False">
+            <Label Content="Name" FontSize="8" DockPanel.Dock="Top" Margin="10,10,10,0" Width="200" VerticalContentAlignment="Bottom"/>
+            <TextBox x:Name="taskName" FontSize="8" DockPanel.Dock="Top" Width="200" Margin="10,0,10,0" Height="20"/>
+
+            <Label Content="Description" FontSize="8" DockPanel.Dock="Top" Margin="10,10,10,0" Width="200" VerticalContentAlignment="Bottom"/>
+            <TextBox x:Name="taskDescription" FontSize="8" DockPanel.Dock="Top" Width="200" Margin="10,0,10,0" Height="20"/>
+
+            <Label Content="Deadline" FontSize="8" DockPanel.Dock="Top" Margin="10,10,10,0" Width="200" VerticalContentAlignment="Bottom"/>
+            <DatePicker x:Name="taskDeadline" FontSize="8" DockPanel.Dock="Top" Width="200" Margin="10,0,10,0" Height="20" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
+                <DatePicker.Resources>
+                    <Style TargetType="DatePickerTextBox">
+                        <Setter Property="Control.Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <TextBlock Text="Choose date"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DatePicker.Resources>
+            </DatePicker>
+
+            <Label Content="Priority" FontSize="8" DockPanel.Dock="Top" Margin="10,10,10,0" Width="200" VerticalContentAlignment="Bottom"/>
+            <TextBox x:Name="taskPriority" FontSize="8" DockPanel.Dock="Top" Width="200" Margin="10,00,10,0" Height="20" PreviewTextInput="taskPriority_PreviewTextInput" ToolTip="Only numeric"/>
+
+            <DockPanel DockPanel.Dock="Bottom">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button x:Name="saveBtn" Content="Save" FontSize="8" Margin="10,0,10,0" Width="50" Click="saveBtn_Click"/>
+                    <Button x:Name="CancelBtn" Content="Cancel" FontSize="8" Margin="10,0,10,0" Width="50" Click="CancelBtn_Click"/>
+                </StackPanel>
+            </DockPanel>
+            
+        </DockPanel>
+    </Grid>
+</Window>
