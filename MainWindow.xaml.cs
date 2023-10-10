@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ToDoApp.Model;
+using ToDoApp.ViewModel;
 
 namespace ToDoApp
 {
@@ -23,19 +13,19 @@ namespace ToDoApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ObservableCollection<TaskToDo> tasks = new ObservableCollection<TaskToDo>();
+        TaskListViewModel taskListViewModel = new();
 
         public MainWindow()
         {
             InitializeComponent();
-            taskListBox.ItemsSource = tasks;
+            DataContext = taskListViewModel; // Set the DataContext to the TaskListViewModel
         }
 
         private void AddTask_Click(object sender, RoutedEventArgs e)
         {
-            AddEditWindow addEditWindow = new(false, tasks);
+            // Open the Add/Edit window for adding a new task
+            AddEditWindow addEditWindow = new(false, taskListViewModel);
             addEditWindow.ShowDialog();
-           
         }
 
         private void editButton_Click(object sender, RoutedEventArgs e)
@@ -43,42 +33,34 @@ namespace ToDoApp
             if (taskListBox.SelectedItem != null)
             {
                 TaskToDo editTask = taskListBox.SelectedItem as TaskToDo;
-                AddEditWindow editWindow = new(true, editTask, tasks);
+
+                // Open the Add/Edit window for editing an existing task
+                AddEditWindow editWindow = new(true, editTask, taskListViewModel);
                 editWindow.ShowDialog();
             }
         }
 
         private void RemoveTask_Click(object sender, RoutedEventArgs e)
         {
-            if (taskListBox.SelectedIndex != -1)
+            if (taskListBox.SelectedItem != null)
             {
-                int selectedIndex = taskListBox.SelectedIndex;
-                tasks.RemoveAt(selectedIndex);
+                TaskToDo selectedTask = taskListBox.SelectedItem as TaskToDo;
+                taskListViewModel.Tasks.Remove(selectedTask); // Remove the selected task
             }
         }
 
-        private void CompleteTask_Click(object sender, RoutedEventArgs e)
-        {
-            /*
-            if (taskListBox.SelectedIndex != -1)
-            {
-                int selectedIndex = taskListBox.SelectedIndex;
-                tasks[selectedIndex] = "[Completed] " + tasks[selectedIndex];
-            }
-            */
-        }
 
         private void taskListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // If any element is selected, update buttons
             removeButton.IsEnabled = (taskListBox.SelectedIndex != -1);
-            completeButton.IsEnabled = (taskListBox.SelectedIndex != -1);
             editButton.IsEnabled = (taskListBox.SelectedIndex != -1);
 
             // and set text box to a current task name
             if (taskListBox.SelectedIndex != -1)
             {
-                taskTextBox.Text = tasks.ElementAt(taskListBox.SelectedIndex).Name;
+                TaskToDo selected = taskListBox.SelectedItem as TaskToDo;
+                taskTextBox.Text = selected.Name;
             }
             else
             {
@@ -86,4 +68,4 @@ namespace ToDoApp
             }
         }        
     }
-}
+ }

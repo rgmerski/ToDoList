@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ToDoApp.Model;
+using ToDoApp.ViewModel;
 
 namespace ToDoApp
 {
@@ -21,7 +22,7 @@ namespace ToDoApp
     /// </summary>
     public partial class AddEditWindow : Window
     {
-        private ObservableCollection<TaskToDo> taskList = new ObservableCollection<TaskToDo>();
+        private TaskListViewModel taskListViewModel;
         private bool isEdit;
         private TaskToDo taskToEdit;
 
@@ -31,13 +32,15 @@ namespace ToDoApp
         }
 
         // Passing ObservableCollection - got some problems with accessibility, source: https://stackoverflow.com/questions/75820604/how-can-i-pass-my-observablecollection-of-any-type-to-a-method-c-sharp
+        // Constructor for editing existing task
         public AddEditWindow(bool edit, TaskToDo editTask, params object[] pArgs)
         {
             InitializeComponent();
+
             if (pArgs[0] != null)
             {
                 dynamic tasks = pArgs[0];
-                taskList = tasks;
+                taskListViewModel = tasks;
                 taskName.Text = editTask.Name;
                 taskDescription.Text = editTask.Description;
                 taskDeadline.DisplayDate = editTask.Deadline;
@@ -48,22 +51,26 @@ namespace ToDoApp
             }
         }
 
+        // Constructor for adding new task (without filling fields)
         public AddEditWindow(bool edit, params object[] pArgs)
         {
             InitializeComponent();
+
             if (pArgs[0] != null)
             {
                 dynamic tasks = pArgs[0];
-                taskList = tasks;
+                taskListViewModel = tasks;
                 isEdit = edit;
             }
         }
 
+        // Close the window without saving changes
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+        // Save the task
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
             TaskToDo taskToDo = new TaskToDo();
@@ -74,26 +81,26 @@ namespace ToDoApp
             taskToDo.Priority = int.Parse(taskPriority.Text);
             taskToDo.Status = (Model.TaskStatus)taskStatus.SelectedIndex;
 
-            // If adding
+            // If adding a new task
             if (!isEdit)
             {
                 taskToDo.Created = DateTime.Now;
-                taskList.Add(taskToDo);
+                taskListViewModel.Tasks.Add(taskToDo); // Add the task to the ViewModel's Tasks collection
             }
-            // If editing
+            // If editing an existing task
             else
             {
-                int editIndex = taskList.IndexOf(taskToEdit);
+                int editIndex = taskListViewModel.Tasks.IndexOf(taskToEdit);
                 if (editIndex != -1)
                 {
-                    taskList[editIndex] = taskToDo;
+                    taskListViewModel.Tasks[editIndex] = taskToDo; // Update the task
                 }
 
             }
             Close();
-
         }
 
+        // Allow only numeric input for priority field
         private void taskPriority_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             // Check if entered text is numeric

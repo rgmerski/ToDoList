@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ToDoApp.Model
 {
+    // Enum for states of task, used mainly for grouping
     public enum TaskStatus
     {
         NotStarted,
