@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToDoApp"
         mc:Ignorable="d"
-        Title="Edit Task" Height="300" Width="300">
+        Title="Edit Task" Height="400" Width="300">
     <Grid>
 
         <DockPanel x:Name="dataPanel" Margin="10,10,10,10" LastChildFill="False">
@@ -19,20 +19,21 @@
             <DatePicker x:Name="taskDeadline" FontSize="8" DockPanel.Dock="Top" Width="200" Margin="10,0,10,0" Height="20" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
-                        <Setter Property="Control.Template">
-                            <Setter.Value>
-                                <ControlTemplate>
-                                    <TextBlock Text="Choose date"/>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
+                        <Setter Property="IsReadOnly" Value="True"/>
                     </Style>
                 </DatePicker.Resources>
             </DatePicker>
 
             <Label Content="Priority" FontSize="8" DockPanel.Dock="Top" Margin="10,10,10,0" Width="200" VerticalContentAlignment="Bottom"/>
-            <TextBox x:Name="taskPriority" FontSize="8" DockPanel.Dock="Top" Width="200" Margin="10,00,10,0" Height="20" PreviewTextInput="taskPriority_PreviewTextInput" ToolTip="Only numeric"/>
+            <TextBox x:Name="taskPriority" FontSize="8" DockPanel.Dock="Top" Width="200" Margin="10,0,10,0" Height="20" PreviewTextInput="taskPriority_PreviewTextInput" ToolTip="Only numeric"/>
 
+            <Label Content="Status" FontSize="8" DockPanel.Dock="Top" Margin="10,10,10,0" Width="200" VerticalContentAlignment="Bottom"/>
+            <ComboBox x:Name="taskStatus"  DockPanel.Dock="Top" Margin="10,0,10,0" Width="200" >
+                <ComboBoxItem Content="Not Started" />
+                <ComboBoxItem Content="In Progress" />
+                <ComboBoxItem Content="Completed" />
+            </ComboBox>
+            
             <DockPanel DockPanel.Dock="Bottom">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button x:Name="saveBtn" Content="Save" FontSize="8" Margin="10,0,10,0" Width="50" Click="saveBtn_Click"/>

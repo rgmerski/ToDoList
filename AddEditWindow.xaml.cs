@@ -23,10 +23,29 @@ namespace ToDoApp
     {
         private ObservableCollection<TaskToDo> taskList = new ObservableCollection<TaskToDo>();
         private bool isEdit;
+        private TaskToDo taskToEdit;
 
         public AddEditWindow()
         {
             InitializeComponent();
+        }
+
+        // Passing ObservableCollection - got some problems with accessibility, source: https://stackoverflow.com/questions/75820604/how-can-i-pass-my-observablecollection-of-any-type-to-a-method-c-sharp
+        public AddEditWindow(bool edit, TaskToDo editTask, params object[] pArgs)
+        {
+            InitializeComponent();
+            if (pArgs[0] != null)
+            {
+                dynamic tasks = pArgs[0];
+                taskList = tasks;
+                taskName.Text = editTask.Name;
+                taskDescription.Text = editTask.Description;
+                taskDeadline.DisplayDate = editTask.Deadline;
+                taskPriority.Text = editTask.Priority.ToString();
+                taskToEdit = editTask;
+                taskStatus.SelectedIndex = (int)editTask.Status;
+                isEdit = edit; 
+            }
         }
 
         public AddEditWindow(bool edit, params object[] pArgs)
@@ -48,16 +67,29 @@ namespace ToDoApp
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
             TaskToDo taskToDo = new TaskToDo();
-            if (!isEdit)
-            {
-                taskToDo.Created = DateTime.Now;
-            }
             taskToDo.Name = taskName.Text;
             taskToDo.Description = taskDescription.Text;
             taskToDo.Updated = DateTime.Now;
             taskToDo.Deadline = taskDeadline.DisplayDate;
             taskToDo.Priority = int.Parse(taskPriority.Text);
-            taskList.Add(taskToDo);
+            taskToDo.Status = (Model.TaskStatus)taskStatus.SelectedIndex;
+
+            // If adding
+            if (!isEdit)
+            {
+                taskToDo.Created = DateTime.Now;
+                taskList.Add(taskToDo);
+            }
+            // If editing
+            else
+            {
+                int editIndex = taskList.IndexOf(taskToEdit);
+                if (editIndex != -1)
+                {
+                    taskList[editIndex] = taskToDo;
+                }
+
+            }
             Close();
 
         }
@@ -74,8 +106,8 @@ namespace ToDoApp
         // Helper function to check if a text is numeric
         private bool IsNumeric(string text)
         {
-            double result;
-            return double.TryParse(text, out result);
+            int result;
+            return int.TryParse(text, out result);
         }
     }
 }

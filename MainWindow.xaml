@@ -14,16 +14,21 @@
         
 
         <DockPanel x:Name="usagePanel" Margin="10,10,10,10" LastChildFill="False">
-            <TextBox DockPanel.Dock="Left" x:Name="taskTextBox" Width="200" Margin="0,0,10,0"/>
-            <Button DockPanel.Dock="Left" Content="Add Task" Click="AddTask_Click" Margin="0,0,10,0"/>
+            <TextBox DockPanel.Dock="Left" x:Name="taskTextBox" Width="200" Margin="0,0,10,0" IsEnabled="False" BorderThickness="1"/>
             <Button x:Name="completeButton" DockPanel.Dock="Right" Content="Complete Task" Click="CompleteTask_Click" Margin="0,0,10,0" IsEnabled="False" Width="100"/>
             <Button x:Name="removeButton" DockPanel.Dock="Right" Content="Remove Task" Click="RemoveTask_Click" Margin="0,0,10,0" IsEnabled="False" Width="100"/>
+            <Button x:Name="editButton" DockPanel.Dock="Right" Content="Edit Task" Margin="0,0,10,0" Width="100" Click="editButton_Click" IsEnabled="False"/>
+            <Button x:Name="addButton" DockPanel.Dock="Right" Content="Add Task" Click="AddTask_Click" Margin="0,0,10,0" Width="100"/>
         </DockPanel>
 
         <ListBox x:Name="taskListBox" Grid.Row="1" Margin="10" SelectionChanged="taskListBox_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding}" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}"/>
+                        <TextBlock Text=" - "/>
+                        <TextBlock Text="{Binding Description}"/>
+                    </StackPanel>                    
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

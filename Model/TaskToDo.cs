@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace ToDoApp.Model
 {
-    internal class TaskToDo
+    public enum TaskStatus
+    {
+        NotStarted,
+        InProgress,
+        Completed
+    }
+
+    public class TaskToDo
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -14,5 +21,6 @@ namespace ToDoApp.Model
         public DateTime Updated { get; set; }
         public DateTime Deadline { get; set; }
         public int Priority { get; set; }
+        public TaskStatus Status { get; set; }
     }
 }
